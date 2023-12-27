@@ -18,7 +18,6 @@ public class EmployeeController {
     @PostMapping("/addEmployee")
     public ResponseEntity<String> addEmployee(@RequestBody Employee employee){
         String id = employeeService.addEmployee(employee);
-        System.out.println(id);
         return new ResponseEntity<>(id,HttpStatus.OK);
     }
     @GetMapping("/getAllEmployee")
