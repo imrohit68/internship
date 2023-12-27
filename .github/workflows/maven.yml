@@ -1,0 +1,36 @@
+name: CICD
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: [ubuntu-latest]
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Build Project
+        run: mvn clean install -DskipTests
+      - name: Login to docker hub
+        run: docker login -u imrohit68 -p @Myedu.com68
+      - name: Build docker image
+        run: docker build -t imrohit68/internship .
+      - name: Publish image to docker hub
+        run: docker push imrohit68/internship:latest
+
+  deploy:
+    needs: build
+    runs-on: [self-hosted]
+    steps:
+      - name: Pull Image from docker hub
+        run: sudo docker pull imrohit68/internship:latest
+      - name: Delete old container
+        run: sudo docker rm -f internship-container
+      - name: Run docker container
+        run: sudo docker run -d -p 80:80 --name internship-container imrohit68/internship
