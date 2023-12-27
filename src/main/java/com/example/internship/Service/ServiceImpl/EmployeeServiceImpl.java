@@ -25,10 +25,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public String addEmployee(Employee employee) {
         employee.setId(UUID.randomUUID().toString());
-        if(employee.getEmployeeName()==null||employee.getPhoneNumber()==null||employee.getEmail()==null||employee.getReportsTo()==null){
+        if(employee.getEmployeeName()==null||employee.getPhoneNumber()==null||employee.getEmail()==null){
             throw new NullFieldException("Fields Cannot Be Null ... Please Enter Values In Each Field");
         }
-        if(employee.getEmployeeName().isEmpty()||employee.getPhoneNumber().isEmpty()||employee.getEmail().isEmpty()||employee.getReportsTo().isEmpty()){
+        if(employee.getEmployeeName().isEmpty()||employee.getPhoneNumber().isEmpty()||employee.getEmail().isEmpty()){
             throw new NullFieldException("Fields Cannot Be Empty ... Please Enter Values In Each Field");
         }
         if(!employeeRepo.existsByEmail(employee.getEmail())&&!employeeRepo.existsByPhoneNumber(employee.getPhoneNumber())){
